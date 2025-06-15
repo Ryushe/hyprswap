@@ -1,7 +1,7 @@
 #!/bin/bash
-localDir="$(dirname "${BASH_SOURCE[0]}")"
-source "$localDir/utils/get_mons.sh"
-source "$localDir/smart_flip.sh"
+local_dir="$(dirname "${BASH_SOURCE[0]}")"
+source "$local_dir/utils/get_mons.sh"
+source "$local_dir/smart_flip.sh"
 
 current_mon_id=$(hyprctl activewindow | grep -oP '(?<=monitor: )\d+')
 current_mon_name=$(hyprctl monitors | grep -A 1 "ID $current_mon_id" | grep "Monitor" | awk '{print $2}')

@@ -1,7 +1,7 @@
 #!/bin/sh
 local_dir=$(dirname "${BASH_SOURCE[0]}")
-source "$localDir/utils/get_mons.sh"
-source "$localDir/smart_flip.sh"
+source "$local_dir/utils/get_mons.sh"
+source "$local_dir/smart_flip.sh"
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 declare -A current_orientation

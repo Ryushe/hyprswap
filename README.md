@@ -1,9 +1,9 @@
 # hyprswap
 Hyprswap allows users to move monitors around more freely, breaking the limits of whats possible with the wayland compositor. 
 
-# installation
+## installation
 
-## installation script
+### installation script
 1. run `./setup.sh`
 2. copy outputted config from `setup.sh` into hyprland.conf (replacing old monitor and workspace conf)
   - NOTE: adjust resolutions, positions, and hrtz to desired settings after pasting into hyprland.conf
@@ -14,12 +14,12 @@ Now, copy the outputted result into you hyprland.conf file replacing:
 - workspace config
 - workspace keybind config
 
-## manual
+### manual
 Install rust with `sudo pacman -S rust`  
 
 Install Hyprsome with `cargo install hyprsome`
 
-### workspaces / hyprsome
+#### workspaces / hyprsome
 Add workspaces to your monitor section in your hyprland.conf file
 ```
 example dual monitor setup:
@@ -52,7 +52,7 @@ Bind the workspaces to your monitors:
 
 Find out more about configuring hyprsome  [here](https://github.com/sopa0/hyprsome).
 
-### keybinds
+#### keybinds
 Set hotkeys to call hyprsome:
 ```
 bind=SUPER,1,exec,hyprsome workspace 1
@@ -78,9 +78,9 @@ bind = $mainMod, R, exec, $HOME/hyprswap/src/correct_workspaces.sh -d
 Thats it!!
 
 
-# About the scripts
+## About the scripts
 This section explains how the scripts work, so if you would like to use only one of them your more than welcome to!
-## Swap_active_workspaces:
+### Swap_active_workspaces:
   - bring your 2nd/3rd monitor to you instead of you looking at it
   - enables the ability to move the workspace on another monitor left and right
   - intended use:
@@ -91,7 +91,7 @@ This section explains how the scripts work, so if you would like to use only one
     - move monitors where I would like and then when I am done I hit the keybind to trigger correct_workspaces.sh to move everything back
 NOTE: if not using correct_workspaces.sh make sure monitors are moved back to default layout before switching workspaces on the monitor 
 
-## Correct_workspaces.sh:
+### Correct_workspaces.sh:
   - compares the workspaces to the monitor config within hyprland.conf and if workspaces don't match it moves the monitors back to where they're supposed to be
   - intended use:
     - used with [hyprsome](https://github.com/sopa0/hyprsome) workspaces 
@@ -104,7 +104,7 @@ NOTE: if not using correct_workspaces.sh make sure monitors are moved back to de
     - `bind = $mainMod, c, exec, $arch_scripts/swap_active_workspaces.sh r`
 <!-- eventually add the url from ryushe.sh of the uploaded video example -->
 
-## Smart_flip.sh:  
+### Smart_flip.sh:  
   - Makes vertical monitor windows stack, and horizontal be side by side when moved around to the other workspaces
   - A script meant to be used with swap_active_workspaces.sh
   - HOW TO ENABLE/DISABLE:
@@ -115,5 +115,5 @@ NOTE: if not using correct_workspaces.sh make sure monitors are moved back to de
   - checks if the hyprland monitor is vertical by viewing hyprland.conf
   - if current monitor = horizontal && new monitor = vertical moves the 
 
-# Credits 
+## Credits 
 [Hyprsome](https://github.com/sopa0/hyprsome)

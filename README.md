@@ -2,14 +2,12 @@
 Hyprswap allows users to move monitors around more freely, breaking the limits of whats possible with the wayland compositor. 
 
 # installation
+
+## installation script
 1. run `./setup.sh`
 2. copy outputted config from `setup.sh` into hyprland.conf (replacing old monitor and workspace conf)
   - NOTE: adjust resolutions, positions, and hrtz to desired settings after pasting into hyprland.conf
-3. 
-
-# config 
-## installation script
-If you used then installation script you should have a really amazing start for your hyprland.conf file
+3. adjust to the preset configs to your liking
 
 Now, copy the outputted result into you hyprland.conf file replacing:
 - monitor config

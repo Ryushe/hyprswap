@@ -24,12 +24,13 @@ function check_flag_conflicts() {
 }
 
 function run_flag_scripts() {
+  dir="/opt/hyprswap/"
   if $left_flag; then
-    cmd="$local_dir/src/swap_active_workspaces.sh l"
+    cmd="$dir/src/swap_active_workspaces.sh l"
   elif $right_flag; then
-    cmd="$local_dir/src/swap_active_workspaces.sh r"
-  elif $correct_flag; then
-    cmd="$local_dir/src/correct_workspaces.sh"
+    cmd="$dir/src/swap_active_workspaces.sh r"
+  elif $correct_flag; then # add -r (for dev and normal) or just do mouse
+    cmd="$dir/src/correct_workspaces.sh -d"
   fi
 
   # Only run if a command was set

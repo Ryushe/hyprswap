@@ -49,6 +49,10 @@ correct_flag=false
 verbose_flag=false
 
 ## start of app
+if [[ $# -eq 0 ]]; then
+  show_help
+  exit 0
+fi
 
 getopt -T
 if [ "$?" != 4 ]; then

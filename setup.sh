@@ -240,7 +240,7 @@ main() {
 
   else
     echo -e "\e[32mUsing current hyprland.conf monitor config\e[0m"
-    echo -e "\e[34mNext time run with \e[31m-d\e[0m \e[34mto generate a 'Default' monitor config"
+    echo -e "\e[34mNext time run with \e[31m-d\e[0m \e[34mto generate a 'Default' monitor config\e[0me
   fi
 
   get_hypr_mons # gets current config

@@ -5,11 +5,13 @@ Hyprswap allows users to move monitors around more freely, breaking the limits o
 ## installation
 
 ### installation script
+NOTE: Pulls monitor config from hyprland.conf 
 1. run `sudo ./setup.sh` - installs the app
 1. run `./setup.sh` - generate the example config using your current monitor settings
-1. copy outputted config into hyprland.conf (replacing old monitor and workspace conf)
-  - NOTE: adjust resolutions, positions, and hrtz to desired settings after pasting into hyprland.conf
-1. adjust to the preset configs to your liking
+1. copy outputted config into hyprland.conf (replacing old monitor and workspace conf if needed)
+  - NOTE: adjust resolutions, positions, and hrtz to desired settings after pasting into hyprland.conf. 
+    - If didn't use -d flag with `setup.sh` should have current monitor config still
+4. adjust to the preset configs to your liking
 
 Now, copy the outputted result into you hyprland.conf file replacing:
 - monitor config
@@ -17,12 +19,11 @@ Now, copy the outputted result into you hyprland.conf file replacing:
 - workspace keybind config
 
 ### manual
-Install rust with `sudo pacman -S rust`  
-
-Install Hyprsome with `cargo install hyprsome`
+1. Install rust with `sudo pacman -S rust`  
+2. Install Hyprsome with `cargo install hyprsome`
 
 #### workspaces / hyprsome
-Add workspaces to your monitor section in your hyprland.conf file
+3. Add workspaces to your monitor section in your hyprland.conf file
 ```
 example dual monitor setup:
 
@@ -37,7 +38,7 @@ The number at the end of the workspace line will determine how many workspaces a
 
 Eg: 1 - 11 = 10 workspaces per monitor
 
-Bind the workspaces to your monitors:  
+4. Bind the workspaces to your monitors:  
 ```
   workspace=1,monitor:DP-1
   workspace=2,monitor:DP-1
@@ -55,7 +56,7 @@ Bind the workspaces to your monitors:
 Find out more about configuring hyprsome  [here](https://github.com/sopa0/hyprsome).
 
 #### keybinds
-Set hotkeys to call hyprsome:
+5. Set hotkeys to call hyprsome:
 ```
 bind=SUPER,1,exec,hyprsome workspace 1
 bind=SUPER,2,exec,hyprsome workspace 2

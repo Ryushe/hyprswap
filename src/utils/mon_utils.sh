@@ -18,7 +18,6 @@ get_monitor_pos() {
 }
 
 get_vertical_mons() {
-#finish 
 mapfile -t vertical_mons < <(awk -F',' '
   /^\s*monitor=.*transform/ {
     sub(/^monitor=/, "", $1)
@@ -30,4 +29,9 @@ mapfile -t vertical_mons < <(awk -F',' '
   }
 ' "$HOME/.config/hypr/hyprland.conf")
 
+}
+
+get_hypr_mons() {
+  # reads from hyprland.conf to get monitor config (full section)
+  mapfile -t hypr_mons < <(grep -E '^\s*monitor=' ~/.config/hypr/hyprland.conf | grep -v '^\s*#')
 }

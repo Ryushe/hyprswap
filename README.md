@@ -5,10 +5,11 @@ Hyprswap allows users to move monitors around more freely, breaking the limits o
 ## installation
 
 ### installation script
-1. run `sudo ./setup.sh` - NOTE: running as non-root user will just generate the config
-2. copy outputted config from `setup.sh` into hyprland.conf (replacing old monitor and workspace conf)
+1. run `sudo ./setup.sh` - installs the app
+1. run `./setup.sh` - generate the example config using your current monitor settings
+1. copy outputted config into hyprland.conf (replacing old monitor and workspace conf)
   - NOTE: adjust resolutions, positions, and hrtz to desired settings after pasting into hyprland.conf
-3. adjust to the preset configs to your liking
+1. adjust to the preset configs to your liking
 
 Now, copy the outputted result into you hyprland.conf file replacing:
 - monitor config

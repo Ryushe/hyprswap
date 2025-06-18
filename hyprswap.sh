@@ -91,7 +91,7 @@ while true; do
     show_help
     shift
     ;;
-  -n | --no-mouse)
+  -n | --no-mouse) # just implement things like this within the config
     echo "no mouse"
     shift
     ;;

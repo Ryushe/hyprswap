@@ -35,3 +35,12 @@ get_hypr_mons() {
   # reads from hyprland.conf to get monitor config (full section)
   mapfile -t hypr_mons < <(grep -E '^\s*monitor=' ~/.config/hypr/hyprland.conf | grep -v '^\s*#')
 }
+
+show_hypr_mons() {
+  space_range=1
+  for ((i = 0; i < ${#hypr_mons[@]}; i++)); do
+    echo ${hypr_mons[i]} # lines from current config
+    echo "workspace=${mons[i]},$space_range"
+    space_range=$((space_range + num_workspaces))
+  done
+}

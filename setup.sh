@@ -1,15 +1,16 @@
 #!/bin/bash
 local_dir=$(dirname "${BASH_SOURCE[0]}")
 source $local_dir/src/utils/mon_utils.sh
+source $local_dir/src/utils/utils.sh
 
 show_help() {
-  echo "################"
-  echo "##   HELPER   ##"
-  echo "################"
+  echo "Help menu:"
   echo
   echo "  -h | --help               shows this menu"
   echo "  -d | --default            generates a default config (doesn't base it off your current hyprland.conf)"
-  echo "  no flags (eg: ./setup.sh) generates a config based off of your current hyprland.conf"
+  echo "  -c | --current             generates a config based off of your current hyprland.conf"
+  echo "  -a | --all                installs hyprswap and generates config file using current hyprland monitor setup"
+  echo "                              - adds source for hyprswap.conf in hyprland.conf as well"
 }
 
 print_banner() {
@@ -44,16 +45,14 @@ check_hyprsome() {
 }
 
 check_root() {
-  echo "checking root (running without root won't run the installer):"
+  echo "checking root:"
 
   if [[ "$EUID" -ne 0 ]]; then
-    echo "You are not root                -> will only generate the config"
-    sleep 2
-    return 1
+    echo "You are not root"
+    echo "Please re-run as root user"
+    exit 1
   fi
   echo "Running as root"
-
-  return 0
 }
 
 num_of_workspaces() {
@@ -72,22 +71,12 @@ show_default_mon_config() {
   done
 }
 
-show_current_mon_config() {
-  space_range=1
-  for ((i = 0; i < ${#hypr_mons[@]}; i++)); do
-    echo ${hypr_mons[i]} # lines from current config
-    echo "workspace=${mons[i]},$space_range"
-    space_range=$((space_range + num_workspaces))
-  done
-
-}
 move_app() {
-  local dir="/opt/"
   echo "Moving hyprsome into $dir"
-  mkdir -p /opt/hyprswap
-  cp -rT --remove-destination "$local_dir" /opt/hyprswap/
+  mkdir -p $dir/hyprswap
+  cp -rT --remove-destination "$local_dir" dir/hyprswap/
   sleep 1
-  echo "Moved into /opt/hyprswap"
+  echo "Moved into $dir/hyprswap"
 
 }
 
@@ -95,7 +84,7 @@ ln_app() {
   echo "Installing hyprswap"
   sleep 1
   rm /usr/bin/hyprswap
-  ln -s /opt/hyprswap/hyprswap.sh /usr/bin/hyprswap
+  ln -s $dir/hyprswap/hyprswap.sh /usr/bin/hyprswap
   echo "Installed hyprswap"
 }
 
@@ -162,110 +151,91 @@ show_bind_config() {
 
 }
 
+overwrite_config() {
+  cfg=$(find "$HOME/.config/hypr/" -maxdepth 1 -name "hyprswap.conf" -print -quit 2>/dev/null)
+  if [[ -n $cfg ]]; then
+    echo "Creating the config overwrites the previous one at ~/.config/hypr/hyprswap.conf"
+    echo "[y/n]"
+    read -r choice
+    choice=${choice,,}
+    if [[ ! $choice == "y" ]]; then
+      echo "Didn't overwrite file, exiting..."
+      exit 1
+    fi
+
+    echo "Continuing"
+  fi
+}
+
 generate_config() {
   key=""
   local hyprswap_cmd="bind = \$mainMod, $key, exec, hyprswap"
   echo
   echo "Time to generate the config"
+  echo
+
+  overwrite_config # check if user wants to overwrite cfg
   # prompts user how many want
   num_of_workspaces
 
-  echo "making example config..."
+  echo "making config..."
   sleep 1
-  echo "Replace position with where the montiors are (eg: 0x0 | -1920x0)"
   echo
-
-  print_config
-  echo
-
-  if [[ ! $default_config ]]; then
-    show_default_mon_config
-  else
-    show_current_mon_config
-  fi
-  echo
-
-  show_monitors # mon1=dp-2, etc
-  echo
-
-  show_workspace_config $num_workspaces
-  echo
-
-  show_bind_config $num_workspaces
-  echo
-
-  echo # Hyprsome keybinds
-
-  keys=("X" "C" "R")
-  declare -A keyMap=(
-    [X]="--left"
-    [C]="--right"
-    [R]="--correct"
-  )
-
-  for key in "${keys[@]}"; do
-    echo "bind = \$mainMod, $key, exec, hyprswap ${keyMap[$key]}"
-  done
-
-}
-
-handle_flags() {
-  case "$1" in
-  -h | --help)
-    show_help
-    exit 1
-    ;;
-  -d | --default)
-    default_config=true
-    shift
-    ;;
-  *)
-    shift
-    ;;
-  esac
-}
-
-main() {
-  default_config=false
-  res="1920x1080"
-  hrtz="60"
-  print_banner
-  echo
-
-  handle_flags $1 # handles args
-
-  if $default_config; then
-    echo -e "\e[32mUsing Default Config\e[0m"
-    echo -e "\e[34mNext time run without \e[31m-d\e[0m \e[34mto generate with current hyprland.conf monitor setup\e[0m"
-
-  else
-    echo -e "\e[32mUsing current hyprland.conf monitor config\e[0m"
-    echo -e "\e[34mNext time run with \e[31m-d\e[0m \e[34mto generate a 'Default' monitor config\e[0me
-  fi
-
-  get_hypr_mons # gets current config
-  get_mons
-
-  if check_root; then
+  {
+    print_config
     echo
-    echo "Would you like to run the installer?"
-    echo "[y/n]"
-    read -r choice
-    # conv to lower
-    choice=${choice,,}
-    if [[ $choice != "y" ]]; then
-      echo
-      echo "Ok, I didn't install anything exiting.."
-      echo
-      echo "Rerun without sudo to just generate the config"
-      exit 1
+
+    if [[ "$default_config" == "true" ]]; then
+      show_default_mon_config
+    else
+      show_hypr_mons # gets the current cfg
     fi
-  else
     echo
-    generate_config
+
+    show_monitors # mon1=dp-2, etc
+    echo
+
+    show_workspace_config $num_workspaces
+    echo
+
+    show_bind_config $num_workspaces
+    echo
+
+    echo # Hyprsome keybinds
+
+    keys=("X" "C" "R")
+    declare -A keyMap=(
+      [X]="--left"
+      [C]="--right"
+      [R]="--correct"
+    )
+
+    for key in "${keys[@]}"; do
+      echo "bind = \$mainMod, $key, exec, hyprswap ${keyMap[$key]}"
+    done
+  } 2>&1 | tee $HOME/.config/hypr/hyprswap.conf
+  echo "Created the config file at ~/.config/hypr/hyprswap.conf"
+  echo
+
+  sleep 1
+  echo "Add config to hyprland.conf?"
+  echo "  - If already added to config say no"
+  confirm_or_exit "Config not added to hyprland.conf"
+  echo "# hyprswap" >>$HOME/.config/hypr/hyprland.conf
+  echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf
+}
+
+run_installer() {
+  echo "Would you like to run the installer?"
+  echo "[y/n]"
+  read -r choice
+  # conv to lower
+  local choice=${choice,,}
+  if [[ $choice != "y" ]]; then
+    echo
+    echo "Ok, I didn't install anything exiting.."
     exit 1
   fi
-
   check_rust
   echo
 
@@ -277,7 +247,59 @@ main() {
 
   ln_app
   echo
+}
 
-  echo -e "\e[32mRe-run as user to generate the config\e[0m"
+run_all() {
+  run_installer
+  generate_config
+}
+
+handle_flags() {
+  case "$1" in
+  -h | --help)
+    show_help
+    exit 1
+    ;;
+  -d | --default)
+    default_config=true
+    echo -e "\e[32mUsing Default Config\e[0m"
+    echo
+    shift
+    generate_config
+    exit 1
+    ;;
+  -i | --installer)
+    run_installer
+    exit 1
+    ;;
+  -c | --current)
+    echo -e "\e[32mUsing current hyprland.conf monitor config\e[0m"
+    default_config=false
+    generate_config
+    shift
+    ;;
+  -a | --all)
+    run_all
+    exit 1
+    ;;
+  *)
+    show_help
+    ;;
+  esac
+}
+
+main() {
+  dir="/opt"
+  res="1920x1080"
+  hrtz="60"
+  print_banner
+  echo
+
+  # leave here - my dumbass is just ckeckign the default config flag in the script
+  get_hypr_mons # gets current config
+  get_mons
+
+  handle_flags $1 # handles args
+
 }
 main "$@"

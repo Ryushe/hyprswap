@@ -1,6 +1,13 @@
 # hyprswap
-Hyprswap allows users to move monitors around more freely, breaking the limits of whats possible with the wayland compositor. 
+Hyprswap is a "hyprland" plugin built utilizing hyprsome (it's a plugin of a plugin). This allows users to move their monitors around with ease. 
 
+What does this mean exactly? It allows for the movement of your second monitor to your main monitor and then correct their locations with ease
+
+Still confused? Check out the example below:
+
+<!-- ex here -->
+
+NOTE: currently only supports up to 3 monitors 
 
 ## installation
 
@@ -75,11 +82,18 @@ bind=SUPERSHIFT,5,exec,hyprsome move 5
 Set hyprswap keybinds:
 ```
 bind = $mainMod, x, exec, hyprswap --left
-bind = $mainMod, c, exec, hypswap --right
+bind = $mainMod, c, exec, hyprswap --right
 bind = $mainMod, R, exec, hyprswap --correct
 ```
 
 Thats it!!
+
+
+## Issues
+Currently known issues:
+- Hyprlock sleeping while spaces are swapped can cause issues
+  - fix: add hyprswap --correct && rest of sleeping commands to execute
+- Spamming the swap button can cause spaces to mess up (in progress of fixing)
 
 
 ## Credits 

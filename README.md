@@ -11,39 +11,45 @@ NOTE: currently only supports up to 3 monitors
 
 ### installation script
 NOTE: Pulls monitor config from hyprland.conf 
-1. run `sudo ./setup.sh` - installs the app
-1. run `./setup.sh` - generate the example config using your current monitor settings
-1. copy outputted config into hyprland.conf (replacing old monitor and workspace conf if needed)
-  - NOTE: adjust resolutions, positions, and hrtz to desired settings after pasting into hyprland.conf. 
-    - If didn't use -d flag with `setup.sh` should have current monitor config still
-4. adjust to the preset configs to your liking
+1. run `sudo ./setup.sh -a` 
+  - Runs installer and generates a config based on your current hyprland monitor setup in hyprland.conf
+1. remove old workspace keybinds (switching to workspace, and moving windows) 
+  - leaving can cause issues
+1. your done if you auto sourced the hyprswap config!
 
-Now, copy the outputted result into you hyprland.conf file replacing:
-- monitor config
-- workspace config
-- workspace keybind config
+Find the keybinds in `$HOME/.config/hypr/hyprswap.conf`
 
-### manual
+Default keybinds:
+- win+x = move focused mon left
+- win+c = move focused mon right
+- win+r = move the workspaces back to their original location
+
+If didnt source:
+1. run `'echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf'`
+
+### manual installation
 1. Install rust with `sudo pacman -S rust`  
 2. Install Hyprsome with `cargo install hyprsome`
+3. `cp -rT --remove-destination "$local_dir" dir/hyprswap/`
+4. `ln -s $dir/hyprswap/hyprswap.sh /usr/bin/hyprswap`
 
 #### workspaces / hyprsome
-3. Add workspaces to your monitor section in your hyprland.conf file
+5. Add workspaces to your monitor section in your hyprland.conf file
 ```
 example dual monitor setup:
 
 monitor=DP-1,1920x1080@60,0x0,1.33
 monitor=DP-1,transform,1
-workspace=DP-1,1 <--
+workspace=DP-1,1 #<--
 monitor=HDMI-A-1,3440x1440@100,813x0,1
-workspace=HDMI-A-1,11 <--
+workspace=HDMI-A-1,11 #<--
 ```
 
 The number at the end of the workspace line will determine how many workspaces are given to each monitor.  
 
 Eg: 1 - 11 = 10 workspaces per monitor
 
-4. Bind the workspaces to your monitors:  
+6. Bind the workspaces to your monitors:  
 ```
   workspace=1,monitor:DP-1
   workspace=2,monitor:DP-1
@@ -61,7 +67,7 @@ Eg: 1 - 11 = 10 workspaces per monitor
 Find out more about configuring hyprsome  [here](https://github.com/sopa0/hyprsome).
 
 #### keybinds
-5. Set hotkeys to call hyprsome:
+7. Set hotkeys to call hyprsome:
 ```
 bind=SUPER,1,exec,hyprsome workspace 1
 bind=SUPER,2,exec,hyprsome workspace 2
@@ -84,10 +90,6 @@ bind = $mainMod, c, exec, hyprswap --right
 bind = $mainMod, R, exec, hyprswap --correct
 ```
 
-Thats it!!
-
-
-## Disclaimer for usage
 Make sure to use `hyprswap --correct` or put your monitors back to the correct orientation manually before switching workspaces
 
 If you happen to swap workspaces without setting it back to the correct config just use your task bar (eg: waybar) to select the messed up workspace since your keybinds for that workspace will no longer work. This is a "feature", due to the limitation of the way hyprland binds monitors/workspaces.
@@ -99,11 +101,14 @@ bind=SUPER,1,exec, bash -c 'hyprswap --correct && hyprsome workspace 1'
 bind=SUPERSHIFT,1,exec, bash -c 'hyprswap --correct && hyprsome move 1'
 ```
 
-## Issues
+## Issues / fixes
 Currently known issues:
 - Hyprlock sleeping while spaces are swapped can cause issues
   - fix: add hyprswap --correct && rest of sleeping commands to execute
+- Two workspaces that are supposed to be on the same monitor ended up on 2 different monitors
+  - fix: focus the bad workspace (eg: workspace 4 on the 11-20 range) move all windows to a different workspace (eg: win+shift+4) now swap to a different workspace on that monitor (eg: 11 or win+1)
 - Spamming the swap button can cause spaces to mess up 
+  - working on fix currently
 
 ## Credits 
 [Hyprsome](https://github.com/sopa0/hyprsome)

@@ -3,9 +3,7 @@ Hyprswap is a "hyprland" plugin built utilizing hyprsome (it's a plugin of a plu
 
 What does this mean exactly? It allows for the movement of your second monitor to your main monitor and then correct their locations with ease
 
-Still confused? Check out the example below:
-
-<!-- ex here -->
+<!-- Still confused? Check out the example below: -->
 
 NOTE: currently only supports up to 3 monitors 
 
@@ -89,12 +87,23 @@ bind = $mainMod, R, exec, hyprswap --correct
 Thats it!!
 
 
+## Disclaimer for usage
+Make sure to use `hyprswap --correct` or put your monitors back to the correct orientation manually before switching workspaces
+
+If you happen to swap workspaces without setting it back to the correct config just use your task bar (eg: waybar) to select the messed up workspace since your keybinds for that workspace will no longer work. This is a "feature", due to the limitation of the way hyprland binds monitors/workspaces.
+
+A cool workaround:  
+Add `hyprswap --correct &&` to the beginning of the workspace commands like so
+```
+bind=SUPER,1,exec, bash -c 'hyprswap --correct && hyprsome workspace 1'
+bind=SUPERSHIFT,1,exec, bash -c 'hyprswap --correct && hyprsome move 1'
+```
+
 ## Issues
 Currently known issues:
 - Hyprlock sleeping while spaces are swapped can cause issues
   - fix: add hyprswap --correct && rest of sleeping commands to execute
-- Spamming the swap button can cause spaces to mess up (in progress of fixing)
-
+- Spamming the swap button can cause spaces to mess up 
 
 ## Credits 
 [Hyprsome](https://github.com/sopa0/hyprsome)

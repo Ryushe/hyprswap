@@ -13,9 +13,9 @@ NOTE: currently only supports up to 3 monitors
 NOTE: Pulls monitor config from hyprland.conf 
 1. run `sudo ./setup.sh -a` 
   - Runs installer and generates a config based on your current hyprland monitor setup in hyprland.conf
-1. remove old workspace keybinds (switching to workspace, and moving windows) 
+2. remove old workspace keybinds (switching to workspace, and moving windows) 
   - leaving can cause issues
-1. your done if you auto sourced the hyprswap config!
+3. your done if you auto sourced the hyprswap config!
 
 Find the keybinds in `$HOME/.config/hypr/hyprswap.conf`
 
@@ -25,7 +25,7 @@ Default keybinds:
 - win+r = move the workspaces back to their original location
 
 If didnt source:
-1. run `'echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf'`
+4. run `'echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf'`
 
 ### manual installation
 1. Install rust with `sudo pacman -S rust`  

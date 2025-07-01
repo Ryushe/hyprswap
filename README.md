@@ -26,8 +26,6 @@ NOTE: Pulls monitor config from hyprland.conf
 If didnt source:  
 6. run `'echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf'`
 
-Find the keybinds in `$HOME/.config/hypr/hyprswap.conf`
-=======
 Find the keybinds and monitor settings in `$HOME/.config/hypr/hyprswap.conf`
 
 Default keybinds:

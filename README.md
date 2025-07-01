@@ -1,11 +1,15 @@
 # hyprswap
-Hyprswap is a "hyprland" plugin built utilizing hyprsome (it's a plugin of a plugin). This allows users to move their monitors around with ease. 
+Hyprswap is a "hyprland" plugin built utilizing hyprsome. Allowing, users to move their monitors around with ease. 
 
 What does this mean exactly? It allows for the movement of your second monitor to your main monitor and then correct their locations with ease
 
-<!-- Still confused? Check out the example below: -->
+Still confused? Check out the example below: 
 
-NOTE: currently only supports up to 3 monitors 
+https://github.com/user-attachments/assets/c27eb2b4-be3c-4441-be72-891166c81516
+
+
+> [!NOTE]
+> currently only supports up to 3 monitors
 
 ## installation
 
@@ -17,6 +21,9 @@ NOTE: Pulls monitor config from hyprland.conf
   - leaving can cause issues
 3. your done if you auto sourced the hyprswap config!
 
+If didnt source:
+4. run `'echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf'`
+
 Find the keybinds in `$HOME/.config/hypr/hyprswap.conf`
 
 Default keybinds:
@@ -24,8 +31,6 @@ Default keybinds:
 - win+c = move focused mon right
 - win+r = move the workspaces back to their original location
 
-If didnt source:
-4. run `'echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf'`
 
 ### manual installation
 1. Install rust with `sudo pacman -S rust`  

@@ -44,17 +44,6 @@ check_hyprsome() {
   fi
 }
 
-check_root() {
-  echo "checking root:"
-
-  if [[ "$EUID" -ne 0 ]]; then
-    echo "You are not root"
-    echo "Please re-run as root user"
-    exit 1
-  fi
-  echo "Running as root"
-}
-
 num_of_workspaces() {
   echo "How many workspaces would you like per monitor"
   echo "Default: 10"
@@ -74,7 +63,7 @@ show_default_mon_config() {
 move_app() {
   echo "Moving hyprsome into $dir"
   mkdir -p $dir/hyprswap
-  cp -rT --remove-destination "$local_dir" dir/hyprswap/
+  cp -rT --remove-destination "$local_dir" $dir
   sleep 1
   echo "Moved into $dir/hyprswap"
 
@@ -83,8 +72,8 @@ move_app() {
 ln_app() {
   echo "Installing hyprswap"
   sleep 1
-  rm /usr/bin/hyprswap
-  ln -s $dir/hyprswap/hyprswap.sh /usr/bin/hyprswap
+  rm $HOME/.local/bin/hyprswap
+  ln -s $dir/hyprswap.sh $HOME/.local/bin/hyprswap
   echo "Installed hyprswap"
 }
 
@@ -226,6 +215,7 @@ generate_config() {
 }
 
 run_installer() {
+  check_if_user
   echo "Would you like to run the installer?"
   echo "[y/n]"
   read -r choice
@@ -289,7 +279,7 @@ handle_flags() {
 }
 
 main() {
-  dir="/opt"
+  dir="$HOME/.local/share/hyprswap"
   res="1920x1080"
   hrtz="60"
   print_banner

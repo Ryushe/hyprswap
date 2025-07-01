@@ -1,7 +1,7 @@
 #!/bin/bash
 # add this script to the end of the swapworkspaces within the hyprland.conf eg && this script
 local_dir=$(dirname "${BASH_SOURCE[0]}")
-source "$local_dir/utils/mon_utils.sh"
+source "$local_dir/mon_utils.sh"
 
 current_mon_id=$(hyprctl activewindow | grep -oP '(?<=monitor: )\d+')
 current_mon_name=$(hyprctl monitors | grep -A 1 "ID $current_mon_id" | grep "Monitor" | awk '{print $2}')

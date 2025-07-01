@@ -2,25 +2,25 @@
 
 deps=("hyprsome" "rust")
 
-check_root() {
-  echo "checking root:"
+check_if_user() {
+  echo "checking if user:"
 
-  if [[ "$EUID" -ne 0 ]]; then
-    echo "You are not root"
-    echo "Please re-run as root user"
-    exit 1
+  if [[ ! "$EUID" -ne 0 ]]; then
+    echo "You are root"
+    echo "Please don't run this script as sudo user"
   fi
-  echo "Running as root"
+  echo "Continuing as user"
 }
 
-check_root
+check_if_user
 echo
 
 echo "Uninstalling hyprswap"
 echo
 
-rm -rf /opt/hyprswap
-app=$(find /opt -maxdepth 1 -type d -name "hyprswap" -print -quit 2>/dev/null)
+rm -rf $HOME/.local/bin/hyprswap
+rm -rf $HOME/.local/share/hyprswap
+app=$(find $HOME/.local/bin -maxdepth 1 -type d -name "hyprswap" -print -quit 2>/dev/null)
 if [[ -n $app ]]; then
   echo "app failed to uninstall"
   echo "try running the uninstaller once more"

@@ -24,7 +24,7 @@ function check_flag_conflicts() {
 }
 
 function run_flag_scripts() {
-  dir="/opt/hyprswap/"
+  dir="${HOME}/.local/share/hyprswap"
   if $left_flag; then
     cmd="$dir/src/swap_active_workspaces.sh l"
   elif $right_flag; then
@@ -91,7 +91,7 @@ while true; do
     show_help
     shift
     ;;
-  -n | --no-mouse)
+  -n | --no-mouse) # just implement things like this within the config
     echo "no mouse"
     shift
     ;;

@@ -13,7 +13,6 @@ function show_help() {
 }
 
 function flip() {
-  sleep .1 # stop flip not working
   current=$1
   new=$2
   get_vertical_mons

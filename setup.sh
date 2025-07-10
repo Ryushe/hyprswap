@@ -8,7 +8,8 @@ show_help() {
   echo
   echo "  -h | --help               shows this menu"
   echo "  -d | --default            generates a default config (doesn't base it off your current hyprland.conf)"
-  echo "  -c | --current             generates a config based off of your current hyprland.conf"
+  echo "  -c | --current            generates a config based off of your current hyprland.conf"
+  echo "  -i | --installer          runs installer"
   echo "  -a | --all                installs hyprswap and generates config file using current hyprland monitor setup"
   echo "                              - adds source for hyprswap.conf in hyprland.conf as well"
 }

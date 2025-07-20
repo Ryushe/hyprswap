@@ -1,5 +1,6 @@
 #!/bin/bash
 ##### random utils
+source "$HOME/.config/hypr/hyprswap.conf"
 
 confirm_or_exit() {
   echo "[y/n]"
@@ -33,10 +34,24 @@ check_if_user() {
   echo "Continuing as user"
 }
 
-is_dir() {
-  dir = $1
-  if [[ -d "$1" ]]; then
-    return 0
+move_mouse() {
+  main_resolution=$(hyprctl monitors | grep -Eo '[0-9]{3,}x[0-9]{3,}@[^ ]+ at 0x0' | awk '{print $1}' | sed 's/@.*//')
+  IFS="x" read -r x y <<<"$main_resolution"
+  x=$((x / 2))
+  y=$((y / 2))
+  hyprctl dispatch movecursor $x $y
+}
+
+swap_config_mouse() {
+  # only runs if enabled in config
+  if [[ $center_mouse == "true" ]]; then
+    move_mouse
   fi
-  return 1
+}
+
+correct_config_mouse() {
+  # only runs if enabled in config
+  if [[ $center_mouse_on_mon_fix == "true" ]]; then
+    move_mouse
+  fi
 }

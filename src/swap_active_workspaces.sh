@@ -1,5 +1,6 @@
 #!/bin/bash
 local_dir="$(dirname "${BASH_SOURCE[0]}")"
+source "$local_dir/utils/core.sh"
 source "$local_dir/utils/get_mons.sh"
 source "$local_dir/utils/smart_flip.sh"
 
@@ -21,10 +22,10 @@ elif [[ $1 = "r" ]]; then
 else
   echo "cant move monitor to nowhere... please give 'r' or 'l'"
 fi
+echo "moving $current_mon_name to $new_mon"
 hyprctl dispatch swapactiveworkspaces $current_mon_name $new_mon
-flip $current_mon_name $new_mon # comment out to remove the flip functionailty
-echo moving $current_mon_name to $new_mon
-sleep .01
+flip $current_mon_name $new_mon # can be disabled within config
+swap_config_mouse               # can be disabled within config
 
 # if left mon and moving left || right mon moving right
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 local_dir=$(dirname "${BASH_SOURCE[0]}")
 source $local_dir/src/utils/mon_utils.sh
-source $local_dir/src/utils/utils.sh
+source $local_dir/src/utils/core.sh
 
 default_config="assets/default_config.conf"
 config_dir="$HOME/.config/hypr"

@@ -1,6 +1,7 @@
 #!/bin/bash
 local_dir=$(dirname "${BASH_SOURCE[0]}")
 source "$local_dir/utils/get_mons.sh"
+source "$local_dir/utils/core.sh"
 source "$local_dir/utils/smart_flip.sh"
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
@@ -130,14 +131,6 @@ function get_space_gap() {
   fi
 }
 
-function move_mouse() {
-  main_resolution=$(hyprctl monitors | grep -Eo '[0-9]{3,}x[0-9]{3,}@[^ ]+ at 0x0' | awk '{print $1}' | sed 's/@.*//')
-  IFS="x" read -r x y <<<"$main_resolution"
-  x=$((x / 2))
-  y=$((y / 2))
-  hyprctl dispatch movecursor $x $y
-}
-
 # currently using - added ability to flip vertical and back
 function main() {
   echo "Current:"
@@ -187,7 +180,7 @@ function dev() {
         move_workspace "$mon" "$ws"
         echo -e "\nFlip Workspace:"
         correct_mon=$(find_new_mon $ws)
-        flip $mon $correct_mon # comment out if don't want flip functionality -B2
+        flip $mon $correct_mon # can enable/disable within config
         sleep 0.2
         echo -e "\nCurrent:"
         get_current_orientation # refresh after move
@@ -196,7 +189,7 @@ function dev() {
       fi
     done
   done
-  move_mouse
+  correct_config_mouse # can enable/disable within config
 }
 
 function test() {

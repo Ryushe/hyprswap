@@ -32,3 +32,11 @@ check_if_user() {
   fi
   echo "Continuing as user"
 }
+
+is_dir() {
+  dir = $1
+  if [[ -d "$1" ]]; then
+    return 0
+  fi
+  return 1
+}

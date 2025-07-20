@@ -3,6 +3,11 @@ local_dir=$(dirname "${BASH_SOURCE[0]}")
 source $local_dir/src/utils/mon_utils.sh
 source $local_dir/src/utils/utils.sh
 
+default_config="assets/default_config.conf"
+config_dir="$HOME/.config/hypr"
+config_file="hyprswap.conf"
+dir="${HOME}/.local/share/hyprswap"
+
 show_help() {
   echo "Help menu:"
   echo
@@ -21,9 +26,9 @@ print_banner() {
 }
 
 print_config() {
-  echo "#####################"
-  echo "##     config      ##"
-  echo "#####################"
+  echo "#########################"
+  echo "##   hyprswap config   ##"
+  echo "#########################"
 }
 
 check_rust() {
@@ -63,7 +68,9 @@ show_default_mon_config() {
 
 move_app() {
   echo "Moving hyprsome into $dir"
-  mkdir -p $dir/hyprswap
+  if [[ ! -d "$dir/hyprswap" ]]; then
+    mkdir -p $dir/hyprswap
+  fi
   cp -rT --remove-destination "$local_dir" $dir
   sleep 1
   echo "Moved into $dir/hyprswap"
@@ -157,30 +164,30 @@ overwrite_config() {
   fi
 }
 
-generate_config() {
+generate_hyprland_config() {
   key=""
   local hyprswap_cmd="bind = \$mainMod, $key, exec, hyprswap"
   echo
-  echo "Time to generate the config"
+  echo "Time to output the config"
   echo
 
-  overwrite_config # check if user wants to overwrite cfg
+  # overwrite_config # check if user wants to overwrite cfg  # uncoment if want config file made again
   # prompts user how many want
   num_of_workspaces
 
-  echo "making config..."
+  echo "outputing config..."
   sleep 1
   echo
   {
     print_config
     echo
 
-    if [[ "$default_config" == "true" ]]; then
-      show_default_mon_config
-    else
-      show_hypr_mons # gets the current cfg
-    fi
-    echo
+    # if [[ "$default_config" == "true" ]]; then
+    #   show_default_mon_config
+    # else
+    #   show_hypr_mons # gets the current cfg
+    # fi
+    # echo
 
     show_monitors # mon1=dp-2, etc
     echo
@@ -190,9 +197,9 @@ generate_config() {
 
     show_bind_config $num_workspaces
     echo
+    echo
 
-    echo # Hyprsome keybinds
-
+    # Hyprsome keybinds
     keys=("X" "C" "R")
     declare -A keyMap=(
       [X]="--left"
@@ -203,16 +210,38 @@ generate_config() {
     for key in "${keys[@]}"; do
       echo "bind = \$mainMod, $key, exec, hyprswap ${keyMap[$key]}"
     done
-  } 2>&1 | tee $HOME/.config/hypr/hyprswap.conf
-  echo "Created the config file at ~/.config/hypr/hyprswap.conf"
-  echo
+  } 2>&1 | tee /tmp/hyprswap # uncoment if want config file made again
+  # echo "Created the config file at ~/.config/hypr/hyprswap.conf"
+  # echo
 
-  sleep 1
-  echo "Add config to hyprland.conf?"
-  echo "  - If already added to config say no"
-  confirm_or_exit "Config not added to hyprland.conf"
-  echo "# hyprswap" >>$HOME/.config/hypr/hyprland.conf
-  echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf
+  echo
+  echo "------------------"
+  echo "Add content above to your hyprland.conf file"
+  echo "  - replace your current workspace configs with above content"
+
+  ## auto add config to hyprswap
+  # sleep 1
+  # echo "Would you like to auto add the config?"
+  # echo "  - nOTE: adds source {file} to bottom of hyprland.conf"
+  # confirm_or_exit "Config not added to hyprland.conf"
+  # echo "# hyprswap" >>$HOME/.config/hypr/hyprland.conf
+  # mv /tmp/hyprswap $HOME/.config/hypr/hyprswap.conf
+  # echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf
+  rm /tmp/hyprswap # dont actually need the config to be made
+}
+
+make_config() {
+  echo "Making config in $config_dir/$config_file"
+  if [[ ! -d "$config_dir" ]]; then
+    mkdir -p "$config_dir"
+  fi
+  if [[ -f "$config_dir/$config_file" ]]; then
+    echo "config already exists, skipping"
+    return 0
+  fi
+
+  cp $default_config $config_dir/$config_file
+  echo "Config sucessfully made!"
 }
 
 run_installer() {
@@ -238,11 +267,14 @@ run_installer() {
 
   ln_app
   echo
+
+  make_config
+  echo
 }
 
 run_all() {
   run_installer
-  generate_config
+  generate_hyprland_config
 }
 
 handle_flags() {
@@ -256,7 +288,7 @@ handle_flags() {
     echo -e "\e[32mUsing Default Config\e[0m"
     echo
     shift
-    generate_config
+    generate_hyprland_config
     exit 1
     ;;
   -i | --installer)
@@ -266,10 +298,12 @@ handle_flags() {
   -c | --current)
     echo -e "\e[32mUsing current hyprland.conf monitor config\e[0m"
     default_config=false
-    generate_config
+    generate_hyprland_config
     shift
     ;;
   -a | --all)
+    echo -e "\e[32mUsing current hyprland.conf monitor config\e[0m"
+    default_config=false
     run_all
     exit 1
     ;;
@@ -280,7 +314,7 @@ handle_flags() {
 }
 
 main() {
-  dir="$HOME/.local/share/hyprswap"
+  install_location="$HOME/.local/share/hyprswap"
   res="1920x1080"
   hrtz="60"
   print_banner

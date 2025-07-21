@@ -12,8 +12,9 @@ https://github.com/user-attachments/assets/c27eb2b4-be3c-4441-be72-891166c81516
 > currently only supports up to 3 monitors
 
 > [!IMPORTANT]
-> Run correct monitors to reset them to their default position or manually change them before changing the monitor workspace
-> If you forget checkout the [fix](#issues-and-fixes)
+> Before changing the monitor workspace IF swapped run `hyprswap --correct` or set manually
+> This is necessary due to how Hyprland manages the monitors  
+> If you forget checkout the [fix](#issues-and-fixes)   
 
 ## installation
 
@@ -132,8 +133,6 @@ Currently known issues:
     ```
 - Two workspaces that are supposed to be on the same monitor ended up on 2 different monitors
   - fix: focus the bad workspace (eg: workspace 4 on the 11-20 range) move all windows to a different workspace (eg: win+shift+4) now swap to a different workspace on that monitor (eg: 11 or win+1)
-- Spamming the swap button can cause spaces to mess up 
-  - working on fix currently
 
 ## Credits 
 [Hyprsome](https://github.com/sopa0/hyprsome)

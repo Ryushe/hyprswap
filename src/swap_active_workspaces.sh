@@ -18,7 +18,7 @@ double_click_reset_check() {
     local current_time_ms=$(date +%s%3N)                     # current time in ms (GNU date)
     local last_changed_time=$(stat -c %Y "$reset_file")      # seconds
     local last_changed_time_ms=$((last_changed_time * 1000)) # convert to ms
-    local time_passed=$((current_time - last_changed_time_ms))
+    local time_passed=$((current_time_ms - last_changed_time_ms))
 
     echo "Found reset_file"
     echo "Current time in ms: $current_time_ms"

@@ -12,8 +12,7 @@ https://github.com/user-attachments/assets/c27eb2b4-be3c-4441-be72-891166c81516
 > currently only supports up to 3 monitors
 
 > [!IMPORTANT]
-> Before changing the monitor workspace IF swapped run `hyprswap --correct` or set manually
-> This is necessary due to how Hyprland manages the monitors  
+> Before changing the monitor workspace IF swapped run `hyprswap --correct` or set manually, this is necessary due to how Hyprland manages the monitors  
 > If you forget checkout the [fix](#issues-and-fixes)   
 
 ## installation

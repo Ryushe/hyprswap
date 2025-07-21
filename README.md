@@ -11,6 +11,10 @@ https://github.com/user-attachments/assets/c27eb2b4-be3c-4441-be72-891166c81516
 > [!NOTE]
 > currently only supports up to 3 monitors
 
+> [!IMPORTANT]
+> Run correct monitors to reset them to their default position or manually change them before changing the monitor workspace
+> If you forget checkout the [fix](#issues-and-fixes)
+
 ## installation
 
 ### installation script
@@ -116,15 +120,15 @@ bind=SUPER,1,exec, bash -c 'hyprswap --correct && hyprsome workspace 1'
 bind=SUPERSHIFT,1,exec, bash -c 'hyprswap --correct && hyprsome move 1'
 ```
 
-## Issues / fixes
+## Issues and fixes
 Currently known issues:
 - Hyprlock sleeping while spaces are swapped can cause issues
   - fix: put this in your hypridle.conf (fixes workspaces before sleeping pc)
   ```
-  general {
-    lock_cmd = pidof hyprlock || hyprlock       # avoid starting multiple hyprlock instances.
-    before_sleep_cmd = loginctl lock-session    # lock before suspend.
-    after_sleep_cmd = hyprctl dispatch dpms on  # to avoid having to press a key twice to turn on the display.
+  listener {
+      timeout = 300                                 # 5min
+      on-timeout = $HOME/dotfiles/scripts/arch/correct_workspaces.sh -r && loginctl lock-session            # lock screen when timeout has passed
+  }
     ```
 - Two workspaces that are supposed to be on the same monitor ended up on 2 different monitors
   - fix: focus the bad workspace (eg: workspace 4 on the 11-20 range) move all windows to a different workspace (eg: win+shift+4) now swap to a different workspace on that monitor (eg: 11 or win+1)

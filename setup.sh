@@ -35,9 +35,15 @@ check_rust() {
   if command -v rustc >/dev/null 2>&1 && command -v cargo >/dev/null 2>&1; then
     echo "Rust is already installed"
   else
-    echo "Rust not detected... installing with pacman"
-    pacman -Sy --noconfirm rust
-    echo "Rust installation complete"
+    echo "Rust not detected... please install with pacman"
+
+    # pacman -Sy --noconfirm rust
+    echo
+    echo "run:"
+    echo "sudo pacman -S rust"
+    echo
+    echo "Then rerun the script"
+    exit 1
   fi
 }
 

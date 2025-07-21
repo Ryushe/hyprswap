@@ -11,12 +11,18 @@ reset_file="/tmp/hyprswap_reset"
 
 double_click_reset_check() {
   if [[ -f "$reset_file" ]]; then
-    local current_time=$(date +%s)
-    local last_changed_time=$(stat -c %Y "$reset_file")
-    local time_passed=$((current_time - last_changed_time))
+    # local current_time=$(date +%s)
+    # local current_time=$(date +%s%3N)                      # GNU date for milliseconds
+    # local last_changed_time=$(stat -c %Y "$reset_file")000 # append 3 zeros for ms
+
+    local current_time_ms=$(date +%s%3N)                     # current time in ms (GNU date)
+    local last_changed_time=$(stat -c %Y "$reset_file")      # seconds
+    local last_changed_time_ms=$((last_changed_time * 1000)) # convert to ms
+    local time_passed=$((current_time - last_changed_time_ms))
+
     echo "Found reset_file"
-    echo "Current time: $current_time"
-    echo "File time: $last_changed_time"
+    echo "Current time in ms: $current_time_ms"
+    echo "File time in ms: $last_changed_time_ms"
     echo "Time passed: $time_passed"
     # Check if file is recent (within 2 seconds)
     if [[ $time_passed -le $double_click_delay ]]; then

@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 local_dir=$(dirname "${BASH_SOURCE[0]}")
-source "$local_dir/src/utils/core.sh"
 source "$HOME/.config/hypr/hyprswap.conf"
 
 function show_help() {
@@ -23,16 +22,6 @@ function check_flag_conflicts() {
     echo "Exiting..."
     exit 1
   fi
-}
-
-## currently fixing this (doesnt handle logic for if different flags && path wrong because using bin instead of script location)
-function correct_mouse() {
-  # centers mouse and such depending on what flag thrown
-  if $correct_flag; then
-    config_mouse
-    return 0
-  fi
-  config_mouse
 }
 
 function run_flag_scripts() {

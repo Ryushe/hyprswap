@@ -3,9 +3,40 @@ local_dir="$(dirname "${BASH_SOURCE[0]}")"
 source "$local_dir/utils/core.sh"
 source "$local_dir/utils/get_mons.sh"
 source "$local_dir/utils/smart_flip.sh"
+source "$HOME/.config/hypr/hyprswap.conf"
 
 current_mon_id=$(hyprctl activewindow | grep -oP '(?<=monitor: )\d+')
 current_mon_name=$(hyprctl monitors | grep -A 1 "ID $current_mon_id" | grep "Monitor" | awk '{print $2}')
+reset_file="/tmp/hyprswap_reset"
+
+double_click_reset_check() {
+  if [[ -f "$reset_file" ]]; then
+    local current_time=$(date +%s)
+    local last_changed_time=$(stat -c %Y "$reset_file")
+    local time_passed=$((current_time - last_changed_time))
+    echo "Found reset_file"
+    echo "Current time: $current_time"
+    echo "File time: $last_changed_time"
+    echo "Time passed: $time_passed"
+    # Check if file is recent (within 2 seconds)
+    if [[ $time_passed -le $double_click_delay ]]; then
+      rm $reset_file
+      echo "Running correct workspaces"
+      $local_dir/../correct_workspaces.sh -d
+      exit 0
+    else
+      # File too old, reset it
+      touch "$reset_file"
+      return 0
+    fi
+  else
+    touch "$reset_file"
+    return 0
+  fi
+}
+if [[ $double_click_reset == "true" ]]; then
+  double_click_reset_check
+fi
 
 declare -A monitor_moves
 #left  right movements
@@ -27,6 +58,7 @@ hyprctl dispatch swapactiveworkspaces $current_mon_name $new_mon
 flip $current_mon_name $new_mon # can be disabled within config
 swap_config_mouse               # can be disabled within config
 
+# working on it currently doesnt seem to do much implement logging
 # if left mon and moving left || right mon moving right
 
 # not sure why this is here

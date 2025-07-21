@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 local_dir=$(dirname "${BASH_SOURCE[0]}")
+source "$HOME/.config/hypr/hyprswap.conf"
 
 function show_help() {
   echo "Help Menu:"
@@ -41,6 +42,7 @@ function run_flag_scripts() {
       eval "$cmd" >/dev/null 2>&1
     fi
   fi
+
 }
 
 left_flag=false

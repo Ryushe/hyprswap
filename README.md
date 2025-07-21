@@ -18,21 +18,28 @@ NOTE: Pulls monitor config from hyprland.conf
 1. `git clone https://github.com/Ryushe/hyprswap.git`
 2. `cd hyprswap`
 3. run `./setup.sh -a` 
-  - Runs installer and generates a config based on your current hyprland monitor setup in hyprland.conf
-4. remove old workspace keybinds (switching to workspace, and moving windows) 
+- Runs installer and generates a hyprland config based on your current monitor setup in hyprland.conf
+4. copy generated hyprland config into `hyprland.conf`
+  - Or create a file and source it 
+5. remove old workspace keybinds (switching to workspace, and moving windows) 
   - leaving can cause issues
-5. your done if you auto sourced the hyprswap config!
 
-If didnt source:  
-6. run `'echo "source = \$HOME/.config/hypr/hyprswap.conf" >>$HOME/.config/hypr/hyprland.conf'`
-
-Find the keybinds and monitor settings in `$HOME/.config/hypr/hyprswap.conf`
 
 Default keybinds:
 - win+x = move focused mon left
 - win+c = move focused mon right
 - win+r = move the workspaces back to their original location
 
+### Configs
+Hyprswap config is found at `$HOME/.config/hypr/hyprswap.conf`
+
+Current Features: (true or false)
+- Monitor Flip - change orientation to match the monitor eg: horizontal -> vertical(dwindle)
+- Center Mouse
+  - When correcting monitor positions
+  - All the time
+- Double click reset - correct monitor positions by clicking same swap direction twice
+  - Adjustable wait time 
 
 ### manual installation
 1. `git clone https://github.com/Ryushe/hyprswap.git`
@@ -90,19 +97,17 @@ bind=SUPERSHIFT,2,exec,hyprsome move 2
 bind=SUPERSHIFT,3,exec,hyprsome move 3
 bind=SUPERSHIFT,4,exec,hyprsome move 4
 bind=SUPERSHIFT,5,exec,hyprsome move 5
-```
-
-## usage
-Set hyprswap keybinds:
-```
+# hyprswap keybinds:
 bind = $mainMod, x, exec, hyprswap --left
 bind = $mainMod, c, exec, hyprswap --right
 bind = $mainMod, R, exec, hyprswap --correct
 ```
 
-Make sure to use `hyprswap --correct` or put your monitors back to the correct orientation manually before switching workspaces
+> [!NOTE]
+> Make sure to use `hyprswap --correct` / put your monitors back to the correct orientation manually before switching workspaces. If not, workspace keybinds will get messed up.
 
-If you happen to swap workspaces without setting it back to the correct config just use your task bar (eg: waybar) to select the messed up workspace since your keybinds for that workspace will no longer work. This is a "feature", due to the limitation of the way hyprland binds monitors/workspaces.
+#### If swap workspaces without setting it back to the correct config 
+Use your task bar (eg: waybar) to select the messed up workspace since your keybinds for that workspace will no longer work. This is a "feature", due to the limitation of the way hyprland binds monitors/workspaces.
 
 A cool workaround:  
 Add `hyprswap --correct &&` to the beginning of the workspace commands like so

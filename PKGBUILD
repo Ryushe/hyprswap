@@ -1,11 +1,12 @@
+# Jaadyn Humphries jaadynhumpries at gmail dot com
 pkgname=hyprswap-git
 pkgver=1.0.0
 pkgrel=1
-pkgdesc="Workspace swapper for Hyprland"
+pkgdesc="Multi-Monitor Tool: A monitor 'swapper' for Hyprland utilizing hyprsome's workspaces"
 arch=('x86_64')
 url="https://github.com/Ryushe/hyprswap"
 depends=('hyprsome-git')
-makedepends=('git')
+makedepends=('git' 'rust')
 provides=('hyprswap')
 conflicts=('hyprswap')
 source=("git+$url.git")
@@ -18,9 +19,12 @@ pkgver() {
 
 build() {
   cd "$srcdir/$pkgname"
+  cargo install --path . --root "$pkgdir/usr"
 }
 
 package() {
   cd "$srcdir/$pkgname"
-  install -Dm755 "target/release/hyprswap" "$pkgdir/usr/bin/hyprswap"
+  install -Dm755 hyprswap.sh "$pkgdir/usr/bin/hyprswap"
+  install -d "$pkgdir/usr/lib/$pkgname"
+  cp -a . "$pkgdir/usr/lib/$pkgname"
 }

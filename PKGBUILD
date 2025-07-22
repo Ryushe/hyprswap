@@ -4,8 +4,8 @@ pkgrel=1
 pkgdesc="Workspace swapper for Hyprland"
 arch=('x86_64')
 url="https://github.com/Ryushe/hyprswap"
-depends=('rust' 'hyprsome')
-makedepends=('git' 'cargo')
+depends=('hyprsome-git')
+makedepends=('git')
 provides=('hyprswap')
 conflicts=('hyprswap')
 source=("git+$url.git")
@@ -18,7 +18,6 @@ pkgver() {
 
 build() {
   cd "$srcdir/$pkgname"
-  cargo build --release --locked
 }
 
 package() {

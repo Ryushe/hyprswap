@@ -1,30 +1,43 @@
-# Jaadyn Humphries jaadynhumpries at gmail dot com
+# Maintainer: Ryushe <jaadynhumpries at gmail dot com>
 pkgname=hyprswap-git
-pkgver=1.0.0
-pkgrel=1
-pkgdesc="Multi-Monitor Tool: A monitor 'swapper' for Hyprland utilizing hyprsome's workspaces"
+pkgver=r31.e0ed51d
+pkgrel=1 # update when add dependencies (increment ++)
+pkgdesc="Monitor 'swapper' for Hyprland utilizing hyprsome's workspaces"
 arch=('x86_64')
 url="https://github.com/Ryushe/hyprswap"
+license=("MIT")
 depends=('hyprsome-git')
 makedepends=('git' 'rust')
-provides=('hyprswap')
-conflicts=('hyprswap')
-source=("git+$url.git")
+optdepends=() # optional dependencies
+provides=('package')
+conflicts=('hyprswap' 'hyprswap-bin')
+# install=proto.install # find in /usr/share/pacman/proto.install (hooks for installer)
+source=("hyprswap-git::git+https://github.com/Ryushe/hyprswap.git")
 sha256sums=('SKIP')
+md5sums=('SKIP')
 
 pkgver() {
-  cd "$srcdir/${pkgname%-git}"
-  git describe --tags | sed 's/^v//;s/-/./g'
+  cd "${pkgname}"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
-  cd "$srcdir/${pkgname%-git}"
+  cd "${pkgname}"
 }
 
+# package() {
+#   cd "${pkgname%-git}"
+#   chmod +x hyprswap.sh
+#   install -Dm755 hyprswap.sh "$pkgdir/usr/bin/hyprswap"
+#   install -d "$pkgdir/usr/lib/$pkgname"
+#   cp -a . "$pkgdir/usr/lib/$pkgname"
+# }
+
 package() {
-  cd "$srcdir/${pkgname%-git}"
-  chmod +x hyprswap.sh
-  install -Dm755 hyprswap.sh "$pkgdir/usr/bin/hyprswap"
-  install -d "$pkgdir/usr/lib/$pkgname"
-  cp -a . "$pkgdir/usr/lib/$pkgname"
+  cd "${pkgname}"
+  install -d "$pkgdir/usr/share/${pkgname}"
+  cp -a . "$pkgdir/usr/share/${pkgname}"
+  chmod +x "$pkgdir/usr/share/${pkgname}/hyprswap.sh"
+  install -Dm755 "$pkgdir/usr/share/${pkgname}/hyprswap.sh" "$pkgdir/usr/bin/hyprswap"
+  install -Dm644 "$pkgdir/usr/share/${pkgname}/README.md" "$pkgdir/usr/share/doc/$pkgname/README.md"
 }

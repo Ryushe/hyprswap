@@ -42,7 +42,7 @@ if [[ ! $choice == "y" ]]; then
   exit 1
 fi
 
-cargo uninstall hyprsome
+yay -Runs hyprsome-git
 echo "Uninstalled hyprsome"
 
 pacman -Runs rust

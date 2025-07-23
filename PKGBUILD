@@ -13,17 +13,17 @@ source=("git+$url.git")
 sha256sums=('SKIP')
 
 pkgver() {
-  cd "$srcdir/$pkgname"
+  cd "$srcdir/${pkgname%-git}"
   git describe --tags | sed 's/^v//;s/-/./g'
 }
 
 build() {
-  cd "$srcdir/$pkgname"
-  cargo install --path . --root "$pkgdir/usr"
+  cd "$srcdir/${pkgname%-git}"
 }
 
 package() {
-  cd "$srcdir/$pkgname"
+  cd "$srcdir/${pkgname%-git}"
+  chmod +x hyprswap.sh
   install -Dm755 hyprswap.sh "$pkgdir/usr/bin/hyprswap"
   install -d "$pkgdir/usr/lib/$pkgname"
   cp -a . "$pkgdir/usr/lib/$pkgname"

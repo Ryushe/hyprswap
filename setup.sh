@@ -31,28 +31,38 @@ print_config() {
   echo "#########################"
 }
 
-check_rust() {
-  if command -v rustc >/dev/null 2>&1 && command -v cargo >/dev/null 2>&1; then
-    echo "Rust is already installed"
-  else
-    echo "Rust not detected... please install with pacman"
+# check_rust() {
+#   if command -v rustc >/dev/null 2>&1 && command -v cargo >/dev/null 2>&1; then
+#     echo "Rust is already installed"
+#   else
+#     echo "Rust not detected... please install with pacman"
 
-    # pacman -Sy --noconfirm rust
-    echo
-    echo "run:"
-    echo "sudo pacman -S rust"
-    echo
-    echo "Then rerun the script"
-    exit 1
-  fi
-}
+#     # pacman -Sy --noconfirm rust
+#     echo
+#     echo "run:"
+#     echo "sudo pacman -S rust"
+#     echo
+#     echo "Then rerun the script"
+#     exit 1
+#   fi
+# }
 
 check_hyprsome() {
   if command -v hyprsome >/dev/null 2>&1; then
     echo "hyprsome already installed"
   else
-    echo "installing hyprsome with cargo"
-    cargo install hyprsome
+    echo "installing hyprsome..."
+    if command -v yay >/dev/null 2>&1; then
+      yay -Sy hyprsome
+    elif command -v paru >/dev/null 2>&1; then
+      paru -Sy hyprsome
+    else
+      echo
+      echo "No AUR helper found. Please install hyprsome manually."
+      echo "Options:"
+      echo "  - yay, paru or cargo install hyprsome"
+      exit 1
+    fi
   fi
 }
 
@@ -262,8 +272,9 @@ run_installer() {
     echo "Ok, I didn't install anything exiting.."
     exit 1
   fi
-  check_rust
-  echo
+
+  # check_rust
+  # echo
 
   check_hyprsome
   echo

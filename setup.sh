@@ -158,6 +158,7 @@ handle_flags() {
 }
 
 main() {
+  declare -A monitor_list
   install_location="$HOME/.local/share/hyprswap"
   res="1920x1080"
   hrtz="60"

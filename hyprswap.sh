@@ -1,8 +1,14 @@
 #!/usr/bin/bash
-source "$HOME/.config/hypr/hyprswap.conf"
 
 dir="/usr/share/hyprswap-git"
 [ -d "$HOME/.local/share/hyprswap" ] && dir="$HOME/.local/share/hyprswap"
+
+main_config="$HOME/.config/hypr/hyprswap.conf"
+if [[ -f $main_config ]]; then
+  source "$main_config"
+else
+  source "$dir/assets/default_config.conf"
+fi
 
 function show_help() {
   echo "Help Menu:"
@@ -56,7 +62,7 @@ function no_params_exit() {
 # not sure if good
 function first_run() {
   if [[ ! -f "$HOME/.config/hyprswap.conf" ]]; then
-    "./$dir/src/utils/init.sh"
+    eval "$dir/src/utils/init.sh"
     exit 1
   fi
 }

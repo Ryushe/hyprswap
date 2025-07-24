@@ -1,6 +1,8 @@
 #!/usr/bin/bash
-local_dir=$(dirname "${BASH_SOURCE[0]}")
 source "$HOME/.config/hypr/hyprswap.conf"
+
+dir="/usr/share/hyprswap-git"
+[ -d "$HOME/.local/share/hyprswap" ] && dir="$HOME/.local/share/hyprswap"
 
 function show_help() {
   echo "Help Menu:"
@@ -25,7 +27,6 @@ function check_flag_conflicts() {
 }
 
 function run_flag_scripts() {
-  dir="/usr/share/hyprswap-git"
   if $left_flag; then
     cmd="$dir/src/swap_active_workspaces.sh l"
   elif $right_flag; then
@@ -52,12 +53,21 @@ function no_params_exit() {
   fi
 }
 
+# not sure if good
+function first_run() {
+  if [[ ! -f "$HOME/.config/hyprswap.conf" ]]; then
+    "./$dir/src/utils/init.sh"
+    exit 1
+  fi
+}
+
 left_flag=false
 right_flag=false
 correct_flag=false
 verbose_flag=false
 
 ## start of app
+first_run
 
 no_params_exit
 

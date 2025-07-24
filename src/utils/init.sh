@@ -1,5 +1,7 @@
 #!/bin/bash
 # runs on first launch
+# gets:
+# - hyprland config
 local_dir=$(dirname "${BASH_SOURCE[0]}")
 source $local_dir/mon_utils.sh
 source $local_dir/installer_core.sh
@@ -15,13 +17,13 @@ print_intro() {
 
 function get_config() {
   # way to handle the changing of paths when aur or installed locally
-  local local_default="$(dirname "$(realpath "$0")")/assets/config.conf"
+  local local_default="$(dirname "$(realpath "$0")")/assets/default_config.conf"
   local config=""
 
   if [[ -f "$local_default" ]]; then
     config="$local_default"
   else
-    config="/usr/share/hyprswap-git/assets/config.conf"
+    config="/usr/share/hyprswap-git/assets/default_config.conf"
   fi
   echo $config
 }
@@ -43,7 +45,6 @@ main() {
   print_intro
   echo
 
-  # leave here - my dumbass is just ckeckign the default config flag in the script
   get_hypr_mons # gets current config - currently not outputting it in installer_core.sh
   get_mons
 
@@ -52,5 +53,8 @@ main() {
   # handle_flags $1 # handles args (enable if want flags again) <- pull from local_installer
   default_config=false
   generate_hyprland_config
+  echo
+
+  echo -e "\e[31mIf you ever need to regenerate the config run hyprswap --generate | -g\e[0m"
 }
 main "$@"

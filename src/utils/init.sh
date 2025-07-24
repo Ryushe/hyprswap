@@ -9,28 +9,28 @@ config_file="hyprswap.conf"
 config_path="$config_dir/$config_file"
 
 print_intro() {
-  echo "Welcome to Hyprswap!! A plugin designed to allow anyone to move their monitors where they want, when they want!"
-  echo "  - This is all made possible due to Hyprsome, so go so them some love!"
+  echo -e "\e[32mWelcome to Hyprswap!! A plugin designed to allow anyone to move their monitors where they want, when they want!\e[0m"
+  echo -e "\e[31m  - This is all made possible due to Hyprsome, so go so them some love!\e[0m"
 }
 
 function get_config() {
   # way to handle the changing of paths when aur or installed locally
-  local local_default="$(dirname "$(realpath "$0")")/assets/default_config.conf"
-  local default_config=""
+  local local_default="$(dirname "$(realpath "$0")")/assets/config.conf"
+  local config=""
 
   if [[ -f "$local_default" ]]; then
-    default_config="$local_default"
+    config="$local_default"
   else
-    default_config="/usr/share/hyprswap-git/assets/default_config.conf"
+    config="/usr/share/hyprswap-git/assets/config.conf"
   fi
-  echo $default_config
+  echo $config
 }
 
 function set_config() {
-  local default_config=$1
+  local config=$1
 
   if [[ ! -f "$config_path" ]]; then
-    cp "$default_config" "$config_path"
+    cp "$config" "$config_path"
     echo "Copied config"
     echo "Config path: $config_path"
   fi

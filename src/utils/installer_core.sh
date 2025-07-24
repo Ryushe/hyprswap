@@ -1,6 +1,6 @@
 #!/bin/bash
 # currently:
-# local_installer
+# setup.sh
 # init.sh
 print_config() {
   echo "#########################"
@@ -96,7 +96,7 @@ show_workspace_config() {
 generate_hyprland_config() {
   key=""
   local hyprswap_cmd="bind = \$mainMod, $key, exec, hyprswap"
-  echo -e "\e[32mMaking hyprland config\e[0m"
+  echo -e "Making hyprland config"
   echo
 
   # overwrite_config # check if user wants to overwrite cfg  # uncoment if want config file made again

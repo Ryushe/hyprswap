@@ -45,16 +45,21 @@ function run_flag_scripts() {
 
 }
 
+function no_params_exit() {
+  if [[ $# -eq 0 ]]; then
+    show_help
+    exit 0
+  fi
+}
+
 left_flag=false
 right_flag=false
 correct_flag=false
 verbose_flag=false
 
 ## start of app
-if [[ $# -eq 0 ]]; then
-  show_help
-  exit 0
-fi
+
+no_params_exit
 
 getopt -T
 if [ "$?" != 4 ]; then

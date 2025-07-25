@@ -2,6 +2,7 @@
 main_config="$HOME/.config/hypr/hyprswap.conf"
 dir="/usr/share/hyprswap-git"
 [ -d "$HOME/.local/share/hyprswap" ] && dir="$HOME/.local/share/hyprswap"
+[ -n "$HYPRSWAP_DEV" ] && dir="$PWD"
 
 function show_help() {
   echo "Help Menu:"
@@ -80,7 +81,7 @@ correct_flag=false
 verbose_flag=false
 
 ## start of app
-first_run # exits if first run
+first_run
 
 if [[ $# -eq 0 ]]; then
   show_help

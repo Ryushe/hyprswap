@@ -120,18 +120,5 @@ bind=SUPER,1,exec, bash -c 'hyprswap --correct && hyprsome workspace 1'
 bind=SUPERSHIFT,1,exec, bash -c 'hyprswap --correct && hyprsome move 1'
 ```
 
-## Issues and fixes
-Currently known issues:
-- Hyprlock sleeping while spaces are swapped can cause issues
-  - fix: put this in your hypridle.conf (fixes workspaces before sleeping pc)
-  ```
-  listener {
-      timeout = 300                                 # 5min
-      on-timeout = $HOME/dotfiles/scripts/arch/correct_workspaces.sh -r && loginctl lock-session            # lock screen when timeout has passed
-  }
-    ```
-- Two workspaces that are supposed to be on the same monitor ended up on 2 different monitors
-  - fix: focus the bad workspace (eg: workspace 4 on the 11-20 range) move all windows to a different workspace (eg: win+shift+4) now swap to a different workspace on that monitor (eg: 11 or win+1)
-
 ## Credits 
 [Hyprsome](https://github.com/sopa0/hyprsome)

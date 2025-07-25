@@ -2,6 +2,9 @@
 # currently:
 # setup.sh
 # init.sh
+local_dir=$(dirname "${BASH_SOURCE[0]}")
+source $local_dir/mon_utils.sh
+
 print_config() {
   echo "#########################"
   echo "##   hyprswap config   ##"
@@ -96,7 +99,7 @@ show_workspace_config() {
 generate_hyprland_config() {
   key=""
   local hyprswap_cmd="bind = \$mainMod, $key, exec, hyprswap"
-  echo -e "Making hyprland config"
+  echo "Making hyprland config"
   echo
 
   # overwrite_config # check if user wants to overwrite cfg  # uncoment if want config file made again
@@ -106,16 +109,19 @@ generate_hyprland_config() {
   echo "outputing hyprland config..."
   sleep 1
   echo
+
+  get_hypr_mons
+  get_mons
   {
     print_config
     echo
 
-    # if [[ "$default_config" == "true" ]]; then
-    #   show_default_mon_config
-    # else
-    #   show_hypr_mons # gets the current cfg
-    # fi
-    # echo
+    if [[ "$default_config" == "true" ]]; then
+      show_default_mon_config
+    else
+      show_hypr_mons # gets the current cfg
+    fi
+    echo
 
     make_monitor_list
     show_monitors # mon1=dp-2, etc

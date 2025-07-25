@@ -13,6 +13,7 @@ config_path="$config_dir/$config_file"
 print_intro() {
   echo -e "\e[32mWelcome to Hyprswap!! A plugin designed to allow anyone to move their monitors where they want, when they want!\e[0m"
   echo -e "\e[31m  - This is all made possible due to Hyprsome, so go so them some love!\e[0m"
+  echo -e "\e[31m  - Note: this is just the first run message, and will not be shown again."
 }
 
 function get_config() {

@@ -42,16 +42,9 @@ function run_flag_scripts() {
   elif $correct_flag; then # add -r (for dev and normal) or just do mouse
     cmd="$dir/src/correct_workspaces.sh -d"
   fi
-  run_verbose eval "$cmd"
-
-  # Only run if a command was set
-  # if [[ -n "${cmd:-}" ]]; then
-  #   if $verbose_flag; then
-  #     eval "$cmd"
-  #   else
-  #     eval "$cmd" >/dev/null 2>&1
-  #   fi
-  # fi
+  if [[ -n "${cmd:-}" ]]; then
+    run_verbose eval "$cmd"
+  fi
 
 }
 
@@ -96,7 +89,7 @@ if [ "$?" != 4 ]; then
 fi
 set -o errexit -o noclobber -o nounset -o pipefail
 # note for perams, if peram needs arg set it with : after eg l: && left:
-params="$(getopt -o lrcvhn -l left,right,correct,verbose,help,no-mouse --name "$0" -- "$@")"
+params="$(getopt -o lrcvhg -l left,right,correct,verbose,help,generate --name "$0" -- "$@")"
 eval set -- "$params"
 
 # note: if want args access it with $2 and put shift 2
@@ -129,7 +122,7 @@ while true; do
     ;;
   -h | --help)
     show_help
-    shift
+    exit 1
     ;;
   --)
     shift

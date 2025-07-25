@@ -56,7 +56,7 @@ function run_flag_scripts() {
 }
 
 function no_params_exit() {
-  if [[ $# -eq 0 ]]; then
+  if [[ "$1" == "" ]]; then
     show_help
     exit 0
   fi
@@ -87,7 +87,6 @@ verbose_flag=false
 
 ## start of app
 first_run # exits if first run
-no_params_exit
 source_config
 
 getopt -T
@@ -137,7 +136,7 @@ while true; do
     break
     ;;
   *)
-    echo "Not implemented: $1" >&2
+    show_help
     exit 1
     ;;
   esac

@@ -79,13 +79,14 @@ right_flag=false
 correct_flag=false
 verbose_flag=false
 
+## start of app
+first_run # exits if first run
+
 if [[ $# -eq 0 ]]; then
   show_help
   exit 0
 fi
 
-## start of app
-first_run # exits if first run
 source_config
 
 getopt -T
@@ -135,8 +136,7 @@ while true; do
     break
     ;;
   *)
-    show_help
-    exit 1
+    shift
     ;;
   esac
 done

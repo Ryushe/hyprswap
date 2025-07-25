@@ -10,6 +10,7 @@ function show_help() {
   echo "  -c | --correct     Correct current workspaces"
   echo "  -g | --generate    Generate hyprsome's config for hyprland.conf"
   echo "  -v | --verbose     output in verbose mode"
+  echo "  -h | --help        help menu"
 }
 
 run_verbose() {
@@ -77,6 +78,11 @@ left_flag=false
 right_flag=false
 correct_flag=false
 verbose_flag=false
+
+if [[ $# -eq 0 ]]; then
+  show_help
+  exit 0
+fi
 
 ## start of app
 first_run # exits if first run

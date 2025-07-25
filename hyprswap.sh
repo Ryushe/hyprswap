@@ -1,13 +1,23 @@
 #!/usr/bin/bash
-local_dir=$(dirname "${BASH_SOURCE[0]}")
-source "$HOME/.config/hypr/hyprswap.conf"
+main_config="$HOME/.config/hypr/hyprswap.conf"
+dir="/usr/share/hyprswap-git"
+[ -d "$HOME/.local/share/hyprswap" ] && dir="$HOME/.local/share/hyprswap"
 
 function show_help() {
   echo "Help Menu:"
   echo "  -l | --left        Swap workspaces to the left"
   echo "  -r | --right       Swap workspaces to the right"
   echo "  -c | --correct     Correct current workspaces"
+  echo "  -g | --generate    Generate hyprsome's config for hyprland.conf"
   echo "  -v | --verbose     output in verbose mode"
+}
+
+run_verbose() {
+  if $verbose_flag; then
+    "$@"
+  else
+    "$@" >/dev/null 2>&1
+  fi
 }
 
 function check_flag_conflicts() {
@@ -25,7 +35,6 @@ function check_flag_conflicts() {
 }
 
 function run_flag_scripts() {
-  dir="/usr/share/hyprswap-git"
   if $left_flag; then
     cmd="$dir/src/swap_active_workspaces.sh l"
   elif $right_flag; then
@@ -33,16 +42,42 @@ function run_flag_scripts() {
   elif $correct_flag; then # add -r (for dev and normal) or just do mouse
     cmd="$dir/src/correct_workspaces.sh -d"
   fi
+  run_verbose eval "$cmd"
 
   # Only run if a command was set
-  if [[ -n "${cmd:-}" ]]; then
-    if $verbose_flag; then
-      eval "$cmd"
-    else
-      eval "$cmd" >/dev/null 2>&1
-    fi
-  fi
+  # if [[ -n "${cmd:-}" ]]; then
+  #   if $verbose_flag; then
+  #     eval "$cmd"
+  #   else
+  #     eval "$cmd" >/dev/null 2>&1
+  #   fi
+  # fi
 
+}
+
+function no_params_exit() {
+  if [[ $# -eq 0 ]]; then
+    show_help
+    exit 0
+  fi
+}
+
+# not sure if good
+function first_run() {
+  if [[ ! -f "$main_config" ]]; then
+    eval "$dir/src/utils/init.sh"
+    exit 1
+  fi
+}
+
+function source_config() {
+  if [[ -f $main_config ]]; then
+    run_verbose echo "Using main config"
+    source "$main_config"
+  else
+    run_verbose echo "Using default config"
+    source "$dir/assets/default_config.conf"
+  fi
 }
 
 left_flag=false
@@ -51,10 +86,9 @@ correct_flag=false
 verbose_flag=false
 
 ## start of app
-if [[ $# -eq 0 ]]; then
-  show_help
-  exit 0
-fi
+first_run # exits if first run
+no_params_exit
+source_config
 
 getopt -T
 if [ "$?" != 4 ]; then
@@ -84,6 +118,11 @@ while true; do
     correct_flag=true
     shift
     ;;
+  -g | --generate)
+    echo "generating config"
+    eval $dir/setup.sh --generate
+    shift
+    ;;
   -v | --verbose)
     echo "verbose"
     verbose_flag=true
@@ -91,10 +130,6 @@ while true; do
     ;;
   -h | --help)
     show_help
-    shift
-    ;;
-  -n | --no-mouse) # just implement things like this within the config
-    echo "no mouse"
     shift
     ;;
   --)

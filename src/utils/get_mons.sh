@@ -1,5 +1,5 @@
 #!/bin/bash
-# returns a list of $main_mon $left_mon $right_mon
+# returns a list of monitors
 
 # gets an array of mons
 IFS=$'\n' read -r -d '' -a mons < <(hyprctl monitors | grep Monitor | awk '{print $2}' && printf '\0')

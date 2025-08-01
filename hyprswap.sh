@@ -2,7 +2,6 @@
 main_config="$HOME/.config/hypr/hyprswap.conf"
 dir="/usr/share/hyprswap-git"
 [ -d "$HOME/.local/share/hyprswap" ] && dir="$HOME/.local/share/hyprswap"
-[ -n "$HYPRSWAP_DEV" ] && dir="$PWD"
 
 function show_help() {
   echo "Help Menu:"
@@ -97,7 +96,7 @@ if [ "$?" != 4 ]; then
 fi
 set -o errexit -o noclobber -o nounset -o pipefail
 # note for perams, if peram needs arg set it with : after eg l: && left:
-params="$(getopt -o lrcvhg -l left,right,correct,verbose,help,generate --name "$0" -- "$@")"
+params="$(getopt -o lrcvhg -l left,right,correct,verbose,help,generate,dev --name "$0" -- "$@")"
 eval set -- "$params"
 
 # note: if want args access it with $2 and put shift 2
@@ -131,6 +130,13 @@ while true; do
   -h | --help)
     show_help
     exit 1
+    ;;
+  --dev)
+    verbose_flag=true
+    dir="$PWD"
+    echo "dev mode && running with verbose mode"
+    echo "running dir=$dir"
+    shift
     ;;
   --)
     shift
